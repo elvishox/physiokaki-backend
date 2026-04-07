@@ -13,10 +13,13 @@ import { UserProgress } from './progress/entities/user-progress.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'database.sqlite',
+      // Si existe DATABASE_URL (en Render), usa Postgres. Si no, usa SQLite.
+      type: process.env.DATABASE_URL ? 'postgres' : 'sqlite',
+      url: process.env.DATABASE_URL, 
+      database: process.env.DATABASE_URL ? undefined : 'database.sqlite',
       entities: [User, Flashcard, StudyModule, UserProgress],
-      synchronize: true, // Solo para desarrollo
+      synchronize: true, // Esto creará las tablas automáticamente en tu nueva DB de Render
+      ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false, // Necesario para Render
     }),
     AuthModule,
     FlashcardsModule,
