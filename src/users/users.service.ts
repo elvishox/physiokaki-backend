@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { UserProgress } from '../../progress/entities/user-progress.entity';
+import { UserProgress } from '../progress/entities/user-progress.entity';
 
 @Entity()
 export class User {
