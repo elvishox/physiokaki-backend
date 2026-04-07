@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller'; // 👈 1. IMPORTAR EL CONTROLADOR
 import { AuthModule } from './auth/auth.module';
 import { FlashcardsModule } from './flashcards/flashcards.module';
 import { ModulesModule } from './modules/modules.module';
@@ -15,15 +16,13 @@ import { UserProgress } from './progress/entities/user-progress.entity';
     TypeOrmModule.forRoot(
       process.env.DATABASE_URL
         ? {
-            // Configuración para PRODUCCIÓN (Render + Postgres)
             type: 'postgres',
             url: process.env.DATABASE_URL,
             entities: [User, Flashcard, StudyModule, UserProgress],
-            synchronize: true, // Se recomienda false en producción real, pero déjalo true para que cree las tablas ahora
+            synchronize: true,
             ssl: { rejectUnauthorized: false },
           }
         : {
-            // Configuración para LOCAL (Tu PC + SQLite)
             type: 'sqlite',
             database: 'database.sqlite',
             entities: [User, Flashcard, StudyModule, UserProgress],
@@ -36,5 +35,7 @@ import { UserProgress } from './progress/entities/user-progress.entity';
     ProgressModule,
     UsersModule,
   ],
+  controllers: [AppController], // 👈 2. REGISTRAR EL CONTROLADOR AQUÍ
+  providers: [],                // 👈 3. (OPCIONAL) PUEDES DEJARLO ASÍ O AGREGAR APPSERVICE
 })
 export class AppModule {}
