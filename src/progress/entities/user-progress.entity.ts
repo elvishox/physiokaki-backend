@@ -20,7 +20,7 @@ export class UserProgress {
   incorrectCount: number;
 
   // ✅ Cambiado de 'timestamp' a 'datetime'
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   lastReviewed: Date;
 
   @ManyToOne(() => User)
