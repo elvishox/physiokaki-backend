@@ -1,20 +1,20 @@
-// backend/src/main.ts
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // ESTA ES LA CLAVE:
+  
+  // ✅ Configurar CORS correctamente
   app.enableCors({
     origin: [
-      'https://physiokaki-frontend.vercel.app', 
-      'https://physiokaki-frontend-pum52urbi-elvishoxs-projects.vercel.app'
+      'https://physiokaki-frontend.vercel.app',
+      'http://localhost:3000', // para desarrollo local
     ],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
-
-  await app.listen(process.env.PORT || 3000);
+  
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
