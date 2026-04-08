@@ -1,67 +1,45 @@
 import { NestFactory } from '@nestjs/core';
 import { Controller, Post, Body, Get, Module } from '@nestjs/common';
 
-// Controlador de Auth
 @Controller('auth')
-export class AuthController {
+class AuthController {
   @Post('register')
   register(@Body() body: any) {
-    console.log('Registro recibido:', body);
+    console.log('📝 Registro:', body.email);
     return {
       success: true,
-      message: 'Usuario registrado correctamente',
-      user: {
-        id: Date.now(),
-        email: body.email,
-        name: body.name || 'Usuario'
-      }
-    };
-  }
-
-  @Post('login')
-  login(@Body() body: any) {
-    return {
-      success: true,
-      message: 'Login exitoso',
-      token: 'fake-jwt-token-' + Date.now(),
-      user: {
-        email: body.email
-      }
+      message: 'Usuario registrado',
+      user: { id: Date.now(), email: body.email, name: body.name }
     };
   }
 }
 
-// Controlador de prueba
 @Controller()
-export class AppController {
+class RootController {
   @Get()
   root() {
-    return { status: 'ok', message: 'Physiokaki API funcionando' };
+    return { status: 'ok', message: 'Physiokaki API' };
   }
 }
 
-// Módulo principal
 @Module({
-  controllers: [AuthController, AppController],
+  controllers: [AuthController, RootController],
 })
 class AppModule {}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // CORS manual
+  // CORS para todos
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    if (req.method === 'OPTIONS') {
-      return res.status(200).send();
-    }
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    if (req.method === 'OPTIONS') return res.status(200).send();
     next();
   });
   
   await app.listen(process.env.PORT ?? 10000);
-  console.log(`✅ Backend funcionando en puerto ${process.env.PORT ?? 10000}`);
-  console.log(`📝 Ruta de registro: POST /auth/register`);
+  console.log('✅ Backend listo en puerto', process.env.PORT ?? 10000);
 }
 bootstrap();
