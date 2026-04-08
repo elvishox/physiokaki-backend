@@ -4,25 +4,22 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // RUTA DE PRUEBA (funciona siempre)
-  app.getHttpAdapter().get('/test', (req, res) => {
-    res.json({ 
-      message: 'Backend funcionando correctamente', 
-      timestamp: new Date(),
-      status: 'ok'
-    });
+  // FORZAR CORS MANUALMENTE - Middleware global
+  app.use((req, res, next) => {
+    // Headers CORS para TODAS las respuestas
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    // Manejar preflight OPTIONS
+    if (req.method === 'OPTIONS') {
+      return res.status(200).send();
+    }
+    next();
   });
   
-  // Configurar CORS
-  app.enableCors({ 
-    origin: true,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  });
-  
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`🚀 Servidor corriendo en puerto ${process.env.PORT ?? 3000}`);
-  console.log(`✅ Ruta de prueba: /test`);
+  await app.listen(process.env.PORT ?? 10000);
+  console.log(`🚀 Backend CORS manual activado en puerto ${process.env.PORT ?? 10000}`);
 }
 bootstrap();
