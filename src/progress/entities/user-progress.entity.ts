@@ -19,8 +19,8 @@ export class UserProgress {
   @Column({ default: 0 })
   incorrectCount: number;
 
- @Column({ type: 'timestamp', nullable: true }) // <--- Sin la comilla después de true
-  lastReviewed: Date;
+ @Column({ nullable: true })
+lastReviewed: Date;
 
   @ManyToOne(() => User)
   user: User;
