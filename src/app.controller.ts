@@ -4,6 +4,11 @@ import { Controller, Get } from '@nestjs/common';
 export class AppController {
   @Get()
   getHello(): string {
-    return '¡Servidor de Physiokaki funcionando y conectado a Postgres! 🚀';
+    return 'PhysioKaki API - Funcionando correctamente';
+  }
+
+  @Get('health')
+  healthCheck(): string {
+    return 'OK';
   }
 }
