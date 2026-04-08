@@ -1,0 +1,15 @@
+[33m511304d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m 🔥 SOLUCION NUCLEAR CORS - Middleware manual
+[33mfbd1e1f[m Fix: manifest moved to public and 404 resolved
+[33m007b4f7[m Fix: Hardcoded CORS and Options status
+[33m5431861[m Fix: Endpoint /auth/register funcionando
+[33m6777629[m Backend funcional con registro y login
+[33m0ed1239[m Fix CORS: manual headers for all responses
+[33mdacb4a9[m Add test route and CORS
+[33mb039a58[m Fix CORS: allow all vercel.app domains and handle preflight
+[33m1859f0a[m CORS fix - open access
+[33mf46ad01[m Fix CORS
+[33m5a3b531[m Fix: agregar controlador y corregir tipo de dato para SQLite
+[33m5a0a980[m Fix: quitar tipo timestamp para compatibilidad con SQLite
+[33m45d26ce[m Fix: habilitar CORS en main.ts
+[33m3c24d75[m[33m ([m[1;31morigin/main[m[33m)[m Fix: Registrando AppController en AppModule
+[33m31ee7a9[m Feat: Agregada ruta inicial de bienvenida
