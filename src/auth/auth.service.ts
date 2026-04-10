@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -14,6 +18,11 @@ export class AuthService {
   ) {}
 
   async register(email: string, password: string) {
+    const existingUser = await this.userRepository.findOne({ where: { email } });
+    if (existingUser) {
+      throw new BadRequestException('El email ya está registrado');
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.userRepository.create({
       email,
@@ -21,7 +30,7 @@ export class AuthService {
     });
     await this.userRepository.save(user);
     
-    const token = this.jwtService.sign({ userId: user.id, email: user.email });
+    const token = this.jwtService.sign({ sub: user.id, email: user.email });
     return { token, user: { id: user.id, email: user.email } };
   }
 
@@ -36,7 +45,7 @@ export class AuthService {
       throw new UnauthorizedException('Credenciales inválidas');
     }
     
-    const token = this.jwtService.sign({ userId: user.id, email: user.email });
+    const token = this.jwtService.sign({ sub: user.id, email: user.email });
     return { token, user: { id: user.id, email: user.email } };
   }
 }

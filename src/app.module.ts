@@ -1,21 +1,36 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-// ... otros imports
+import { FlashcardsModule } from './flashcards/flashcards.module';
+import { ModulesModule } from './modules/modules.module';
+import { ProgressModule } from './progress/progress.module';
+import { UsersModule } from './users/users.module';
+
+const databaseConfig: TypeOrmModuleOptions = process.env.DATABASE_URL
+  ? {
+      type: 'postgres',
+      url: process.env.DATABASE_URL,
+      synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    }
+  : {
+      type: 'sqlite',
+      database: 'db.sqlite',
+      synchronize: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    };
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',  // ← IMPORTANTE: especificar 'postgres'
-      url: process.env.DATABASE_URL,
-      synchronize: true,  // solo para desarrollo
-      ssl: {
-        rejectUnauthorized: false,  // necesario para Render
-      },
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    }),
+    TypeOrmModule.forRoot(databaseConfig),
     AuthModule,
-    // ... otros módulos
+    FlashcardsModule,
+    ModulesModule,
+    ProgressModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
