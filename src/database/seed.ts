@@ -1,12 +1,21 @@
 import { DataSource } from 'typeorm';
 import * as path from 'path';
+import * as dotenv from 'dotenv';
+
+// 1. Cargar las variables del archivo .env
+dotenv.config();
 
 const AppDataSource = new DataSource({
-  type: "sqlite",
-  database: "db.sqlite",
+  type: "postgres", // <-- Cambiado de sqlite a postgres
+  url: process.env.DATABASE_URL, // <-- Ahora usa la URL de Supabase que pusiste en el .env
   entities: [path.join(__dirname, '../**/*.entity.{ts,js}')],
   synchronize: true,
+  ssl: {
+    rejectUnauthorized: false, // <-- Necesario para conectar con Supabase desde fuera
+  },
 });
+
+// ... el resto del código (la función seed) se queda igual
 
 async function seed() {
   try {
