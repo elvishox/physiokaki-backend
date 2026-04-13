@@ -3,7 +3,7 @@ import { ModulesService } from './modules.service';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('modules')
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))  <-- Ponle estas dos barras
 export class ModulesController {
   constructor(private modulesService: ModulesService) {}
 
