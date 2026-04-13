@@ -1,23 +1,20 @@
-# 1. Usar una imagen de Node.js ligera
+# 1. Imagen ligera
 FROM node:20-alpine
 
-# 2. Crear carpeta de trabajo
+# 2. Carpeta de trabajo
 WORKDIR /app
 
-# 3. Copiar archivos de dependencias
+# 3. Copiar dependencias
 COPY package*.json ./
 
-# 4. Instalar dependencias
+# 4. Instalar
 RUN npm install
 
-# 5. Copiar el resto del código
+# 5. Copiar código
 COPY . .
 
-# 6. Construir la aplicación (pasar de TS a JS)
-RUN npm run build
-
-# 7. Exponer el puerto
+# 6. Exponer puerto
 EXPOSE 3000
 
-# 8. Comando para arrancar
-CMD ["npm", "run", "start:prod"]
+# 7. Modo desarrollo
+CMD ["npm", "run", "start:dev"]

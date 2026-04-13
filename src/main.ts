@@ -6,13 +6,17 @@ async function bootstrap() {
   dotenv.config();
 
   const app = await NestFactory.create(AppModule);
+
+  // 🛡️ Configuración mejorada para Producción
   app.enableCors({
-    origin: true,
+    origin: '*', // En producción podrías poner ['https://tu-app.vercel.app']
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
   });
 
+  // Render asigna dinámicamente el PORT, así que process.env.PORT es vital
   const port = process.env.PORT || 3001;
-  await app.listen(port);
-  console.log(`Backend corriendo en: http://localhost:${port}`);
+  await app.listen(port, '0.0.0.0'); // Agregar '0.0.0.0' ayuda a Render a exponer el servicio
+  console.log(`Servidor activo en puerto: ${port}`);
 }
-
 bootstrap();

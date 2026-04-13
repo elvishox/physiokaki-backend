@@ -2,6 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { Flashcard } from '../../flashcards/entities/flashcard.entity';
 
+const reviewColumnType = process.env.DATABASE_URL ? 'timestamp' : 'datetime';
+
 @Entity()
 export class UserProgress {
   @PrimaryGeneratedColumn()
@@ -19,8 +21,7 @@ export class UserProgress {
   @Column({ default: 0 })
   incorrectCount: number;
 
-  // ✅ Cambiado de 'timestamp' a 'datetime'
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: reviewColumnType, default: () => 'CURRENT_TIMESTAMP' })
   lastReviewed: Date;
 
   @ManyToOne(() => User)
