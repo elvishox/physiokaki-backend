@@ -10,7 +10,7 @@ const databaseConfig: TypeOrmModuleOptions = process.env.DATABASE_URL
   ? {
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      synchronize: true,
+      synchronize: false,
       ssl: {
         rejectUnauthorized: false,
       },
